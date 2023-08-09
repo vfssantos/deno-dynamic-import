@@ -67,6 +67,8 @@ const esbuild: typeof webAssemblyEsbuild = isDenoCLI
 	? nativeEsbuild
 	: webAssemblyEsbuild
 
+let checkInitialization: boolean = false;
+
 
 const sharedEsbuildOptions:
 	webAssemblyEsbuild.BuildOptions = {
@@ -123,10 +125,11 @@ async function buildAndEvaluate(
 	url: URL,
 	modules: Record<string, unknown> = {}, 
 ) {
-	if (!isDenoCLI) {
+	if (!isDenoCLI && !checkInitialization) {
 		esbuild.initialize({
 			worker: typeof Worker !== 'undefined',
 		})
+		checkInitialization=true;
 	}
 
 	const buildResult = await esbuild.build(
