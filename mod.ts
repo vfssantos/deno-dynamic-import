@@ -133,7 +133,7 @@ async function buildAndEvaluate(
 	}
 
 	const buildResult = await esbuild.build(
-		Object.assign({}, sharedEsbuildOptions, options),
+		Object.assign({}, sharedEsbuildOptions, {...options, loader: 'tsx', target: 'es2020'} ),
 	)
 
 	if (isDenoCLI) {
